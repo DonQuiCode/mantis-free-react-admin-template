@@ -15,18 +15,22 @@ function createData(trackingNo, name, fat, carbs, protein) {
   return { trackingNo, name, fat, carbs, protein };
 }
 
+const pricePerBottle = 65; // Ціна одного бутля води в гривнях
+
+// Статуси замовлень можуть бути, наприклад, 0 для 'Pending', 1 для 'Approved', 2 для 'Rejected'
 const rows = [
-  createData(84564564, 'Camera Lens', 40, 2, 40570),
-  createData(98764564, 'Laptop', 300, 0, 180139),
-  createData(98756325, 'Mobile', 355, 1, 90989),
-  createData(98652366, 'Handset', 50, 1, 10239),
-  createData(13286564, 'Computer Accessories', 100, 1, 83348),
-  createData(86739658, 'TV', 99, 0, 410780),
-  createData(13256498, 'Keyboard', 125, 2, 70999),
-  createData(98753263, 'Mouse', 89, 2, 10570),
-  createData(98753275, 'Desktop', 185, 1, 98063),
-  createData(98753291, 'Chair', 100, 0, 14001)
+  createData('13256498', 'вул. Хрущевського, 25', 2, 2, 2 * pricePerBottle),
+  createData('13286564', 'вул. Духновича, 7', 2, 2, 2 * pricePerBottle),
+  createData('84564564', 'вул. Ужгородська, 5', 2, 0, 2 * pricePerBottle),
+  createData('86739658', 'вул. Музикальна, 17', 1, 0, 1 * pricePerBottle),
+  createData('98652366', 'вул. Університетська, 22', 3, 0, 3 * pricePerBottle),
+  createData('98753263', 'вул. Берегівська, 3', 2, 0, 2 * pricePerBottle),
+  createData('98753275', 'вул. Івана Франка, 34', 3, 0, 3 * pricePerBottle),
+  createData('98753291', 'вул. Валенберга, 11', 1, 1, 1 * pricePerBottle),
+  createData('98756325', 'вул. Водна, 6', 2, 1, 2 * pricePerBottle),
+  createData('98764564', 'вул. Ілони Зріні,', 2, 1, 2 * pricePerBottle),
 ];
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -61,32 +65,32 @@ const headCells = [
     id: 'trackingNo',
     align: 'left',
     disablePadding: false,
-    label: 'Tracking No.'
+    label: 'Номер замовлення'
   },
   {
     id: 'name',
     align: 'left',
     disablePadding: true,
-    label: 'Product Name'
+    label: 'Адреса'
   },
   {
     id: 'fat',
     align: 'right',
     disablePadding: false,
-    label: 'Total Order'
+    label: 'Кількість бутлів'
   },
   {
     id: 'carbs',
     align: 'left',
     disablePadding: false,
 
-    label: 'Status'
+    label: 'Статус'
   },
   {
     id: 'protein',
     align: 'right',
     disablePadding: false,
-    label: 'Total Amount'
+    label: 'Сума'
   }
 ];
 
@@ -125,15 +129,15 @@ const OrderStatus = ({ status }) => {
   switch (status) {
     case 0:
       color = 'warning';
-      title = 'Pending';
+      title = 'Виконується';
       break;
     case 1:
       color = 'success';
-      title = 'Approved';
+      title = 'Виконано';
       break;
     case 2:
       color = 'error';
-      title = 'Rejected';
+      title = 'Очікує виконання';
       break;
     default:
       color = 'primary';
@@ -211,7 +215,7 @@ export default function OrderTable() {
                     <OrderStatus status={row.carbs} />
                   </TableCell>
                   <TableCell align="right">
-                    <NumberFormat value={row.protein} displayType="text" thousandSeparator prefix="$" />
+                    <NumberFormat value={row.protein} displayType="text" prefix="₴" />
                   </TableCell>
                 </TableRow>
               );
